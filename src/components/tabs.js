@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 const Tabs = (topics) => {
   // TASK 3
   // ---------------------
@@ -13,10 +15,32 @@ const Tabs = (topics) => {
   //   <div class="tab">technology</div>
   // </div>
   //
-}
+
+const make = document.createElement('div');
+make.classList.add('topics');
+topics.forEach( (topic) => {
+  const tab = document.createElement('div');
+  tab.textContent = topic;
+  tab.classList.add('tab');
+  make.appendChild(tab);
+  console.log(make);
+});
+return make; 
+
+};
 
 const tabsAppender = (selector) => {
   // TASK 4
+
+ const info = axios.get('https://lambda-times-api.herokuapp.com/topics')
+ info.then(res => {
+document.querySelector(selector).appendChild(Tabs(res.info.topics))
+ })
+ .catch(err=>{console.log("I got an error :(" + err)});
+
+
+
+
   // ---------------------
   // Implement this function which takes a css selector as its only argument.
   // It should obtain topics from this endpoint: `https://lambda-times-api.herokuapp.com/topics`

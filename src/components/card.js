@@ -1,3 +1,7 @@
+import axios from 'axios'
+
+
+
 const Card = (article) => {
   // TASK 5
   // ---------------------
@@ -17,10 +21,50 @@ const Card = (article) => {
   //   </div>
   // </div>
   //
-}
 
+const div1 = document.createElement('div');
+const div2 = document.createElement('div');
+const div3 = document.createElement('div');
+const div4 = document.createElement('div');
+const imgtag = document.createElement('img');
+const span1 = document.createElement('span');
+
+div1.classList.add('card');
+div2.classList.add('headline');
+div3.classList.add('author');
+div4.classList.add('img-container');
+
+div2.textContent = article.headline;
+imgtag.src = article.authorPhoto;
+span1.textContent = `By ${article.authorName}`;
+
+div1.appendChild(div2);
+div1.appendChild(div3);
+div4.appendChild(imgtag);
+div3.appendChild(div4);
+div3.appendChild(span1);
+
+div1.addEventListener('click', () => {console.log(article.headline)});
+return div1;
+}
 const cardAppender = (selector) => {
   // TASK 6
+const data = axios.get('https://lambda-times-api.herokuapp.com/articles');
+data.then(res => {
+  console.log(res);
+  const topics = (Object.keys(res.data.articles))
+  topics.forEach(topic => {res.data.articles[topic].forEach(data => {
+      document.querySelector(selector).appendChild(Card(data));
+    })
+  })
+  .catch(err => console.log(err));
+})
+
+
+
+
+
+
   // ---------------------
   // Implement this function that takes a css selector as its only argument.
   // It should obtain articles from this endpoint: `https://lambda-times-api.herokuapp.com/articles`
